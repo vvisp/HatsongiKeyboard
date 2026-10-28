@@ -4,7 +4,17 @@ window.onload = function () {
 
     const glyphButton = document.getElementById("glyphButton");
     glyphButton.onclick = function () {
-        makeNewGlyph()
+        makeNewGlyph("")
+    };
+    
+    const glyphButtonVu = document.getElementById("glyphButtonVu");
+    glyphButtonVu.onclick = function () {
+        makeNewGlyph("images/29) vu.png")
+    };
+    
+    const glyphButtonLongVowelHorizontal = document.getElementById("glyphButtonLongVowelHorizontal");
+    glyphButtonLongVowelHorizontal.onclick = function () {
+        makeNewGlyph("images/0c) Long Vowel, Horizontal.png")
     };
     
     const lineButton = document.getElementById("lineButton");
@@ -13,17 +23,19 @@ window.onload = function () {
     };
 }
 
-function makeNewGlyph() {
+function makeNewGlyph(imageQuestion) {
     const newGlyph = document.createElement("div");
     newGlyph.id = "glyph_id";
     newGlyph.className = "glyph";
     newGlyph.onclick = function () {
         newGlyph.remove()
     };
-    
+
+    if (imageQuestion) {
     const glyphImage = document.createElement("img");
-    glyphImage.src = "images/29) vu.png";
+    glyphImage.src = imageQuestion;
     newGlyph.appendChild(glyphImage);
+    }
 
     line.appendChild(newGlyph);
 }
