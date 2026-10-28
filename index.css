@@ -1,34 +1,31 @@
+.keyboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: lightgray;
+}
+
+.button {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .textbox {
   display: flex;
   flex-direction: column;
-  /* background-color: lightblue; */
   border: thin solid black;
 }
 
 .line {
   display: flex;
   flex-direction: row;
-  /* background-color: lightblue; */
 }
 
 .glyph {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 220px;
-  height: 220px;
-  background: #cd5454;
-  border-radius: 50%;
-}
-
-.button {
-  margin: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.keyboard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
 }
