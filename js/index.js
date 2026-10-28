@@ -3,9 +3,11 @@ window.onload = function () {
     const tabs = document.getElementById("tabs");
     const pages = document.getElementById("pages");
     const textbox = document.getElementById("textbox");
-    currentLine = document.getElementById("line");
-    selectedGlyph = document.getElementById("pineapple");
     const mango = document.getElementById("mango");
+    const style = document.getElementById("style");
+    selectedGlyph = document.getElementById("pineapple");
+    currentLine = document.getElementById("line");
+    currentDirection = "horizontal";
 
     glyphCategories = {
         voiceless: {
@@ -31,7 +33,8 @@ window.onload = function () {
             id: "symbols",
             page: mango,
             glyphTypes: {
-                longVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
+                longVowelH: {label: "Long Vowel H", id: "long vowel h", image: "images/0c) Long Vowel, Horizontal.png",},
+                longVowelV: {label: "Long Vowel V", id: "long vowel v", image: "images/0d) Long Vowel, Vertical.png",},
             },
         },
     };
@@ -44,16 +47,29 @@ window.onload = function () {
 
     makeNewKey(tabs, "New Line", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedGlyph);
+    makeNewKey(tabs, "Direction", changeDirection);
 
     switchPage(voiceless)
 }
 
-function makeNewPage(param) {
+function changeDirection() {
+    if (currentDirection == "horizontal") {
+        style.textContent += ".textbox{flex-direction: row;}";
+        style.textContent += ".line{flex-direction: column;}";
+        currentDirection = "vertical";
+    } else if (currentDirection == "vertical") {
+        style.textContent += ".textbox{flex-direction: column;}";
+        style.textContent += ".line{flex-direction: row;}";
+        currentDirection = "horizontal";
+    }
+}
+
+function makeNewPage(category) {
     const newPage = document.createElement("div");
-    newPage.id = param.id;
+    newPage.id = category.id;
     newPage.className = "page";
     pages.appendChild(newPage);
-    param.page = newPage;
+    category.page = newPage;
 }
 
 function fillPage(category) {

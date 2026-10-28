@@ -16,8 +16,8 @@
 
 .textbox {
   display: flex;
-  flex-direction: column;
   border: thin solid black;
+  flex-direction: column;
 }
 
 .line {
