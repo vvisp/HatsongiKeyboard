@@ -1,0 +1,31 @@
+.textbox {
+  display: flex;
+  flex-direction: column;
+  /* background-color: lightblue; */
+  border: thin solid black;
+}
+
+.line {
+  display: flex;
+  flex-direction: row;
+  /* background-color: lightblue; */
+}
+
+.glyph {
+  width: 140px;
+  height: 140px;
+  background: #cd5454;
+  border-radius: 50%;
+}
+
+.button {
+    margin: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.keyboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
