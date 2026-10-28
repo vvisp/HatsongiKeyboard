@@ -7,30 +7,45 @@ window.onload = function () {
     const textbox = document.getElementById("textbox");
     currentLine = document.getElementById("line");
     selectedGlyph = document.getElementById("pineapple");
-    glyphTypes = {
-        Voiceless: {
-            Fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
-            LongVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
+    glyphCategories = {
+        voiceless: {
+            page: voiceless,
+            label: "Voiceless",
+            glyphTypes: {
+                fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
+                longVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
+            },
         },
-        Voiced: {
-            Vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
+        voiced: {
+            page: voiced,
+            label: "Voiced",
+            glyphTypes: {
+                vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
+            },
         },
     };
 
-    for (let glyphType in glyphTypes.Voiceless) {
-        makeNewKey(voiceless, glyphTypes.Voiceless[glyphType].label, makeNewGlyph, glyphTypes.Voiceless[glyphType])
-    }
-
-    for (let glyphType in glyphTypes.Voiced) {
-        makeNewKey(voiced, glyphTypes.Voiced[glyphType].label, makeNewGlyph, glyphTypes.Voiced[glyphType])
+    for (let element in glyphCategories) {
+        makeNewKey(tabs, glyphCategories[element].label, switchPage, glyphCategories[element].page)
     }
     
-    makeNewKey(tabs, "Voiceless", switchPage, voiceless);
-    makeNewKey(tabs, "Voiced", switchPage, voiced);
     makeNewKey(tabs, "New Line", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedGlyph);
+    fillPage(glyphCategories.voiceless)
+    fillPage(glyphCategories.voiced)
 
     switchPage(voiceless)
+}
+
+function fillPage(category) {
+    for (let element in category.glyphTypes) {
+        makeNewKey(
+            category.page,
+            category.glyphTypes[element].label,
+            makeNewGlyph,
+            category.glyphTypes[element]
+        )
+    }
 }
 
 function switchPage(page) {
