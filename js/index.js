@@ -20,6 +20,10 @@ function makeNewGlyph() {
     newGlyph.onclick = function () {
         newGlyph.remove()
     };
+    
+    const glyphImage = document.createElement("img");
+    glyphImage.src = "images/29) vu.png";
+    newGlyph.appendChild(glyphImage);
 
     line.appendChild(newGlyph);
 }
