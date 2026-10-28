@@ -3,19 +3,28 @@ window.onload = function () {
     const textbox = document.getElementById("textbox");
     currentLine = document.getElementById("line");
     selectedGlyph = document.getElementById("pineapple");
+    const glyphTypes = {
+        Fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
+        Vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
+        LongVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
+    };
 
-    makeNewKey("Vu", makeNewGlyph, "images/29) vu.png");
-    makeNewKey("Long Vowel", makeNewGlyph, "images/0c) Long Vowel, Horizontal.png");
+    for (let glyphType in glyphTypes) {
+        console.log(glyphTypes[glyphType].label);
+        makeNewKey(glyphTypes[glyphType].label, makeNewGlyph, glyphTypes[glyphType])
+    }
+    
     makeNewKey("Space", makeNewGlyph);
     makeNewKey("New Line", makeNewLine);
     makeNewKey("Delete", deleteSelectedGlyph);
+    makeNewKey("Change", changeSelectedImage, glyphTypes.LongVowel);
 }
 
-function makeNewKey(keyLabel, func, imagePath) {
+function makeNewKey(keyLabel, func, glyphType) {
     const key = document.createElement("button");
     key.className = "key";
     key.onclick = function () {
-        func(imagePath)
+        func(glyphType)
     };
 
     key.appendChild(document.createTextNode(keyLabel));
@@ -28,17 +37,17 @@ function select(glyph) {
     selectedGlyph.style.background = "lightblue";
 }
 
-function makeNewGlyph(image) {
+function makeNewGlyph(glyphType) {
     const newGlyph = document.createElement("div");
     select(newGlyph)
     newGlyph.onclick = function () {
         select(newGlyph)
     };
 
-    if (image) {
+    if (glyphType) {
         newGlyph.className = "glyph";
         const glyphImage = document.createElement("img");
-        glyphImage.src = image;
+        glyphImage.src = glyphType.image;
         newGlyph.appendChild(glyphImage);
     }
     else {
@@ -58,4 +67,8 @@ function makeNewLine(string) {
 
 function deleteSelectedGlyph() {
     selectedGlyph.remove();
+}
+
+function changeSelectedImage(glyphType) {
+    selectedGlyph.children[0].src = glyphType.image
 }
