@@ -2,39 +2,58 @@ window.onload = function () {
     const keyboard = document.getElementById("keyboard");
     const tabs = document.getElementById("tabs");
     const pages = document.getElementById("pages");
-    const voiceless = document.getElementById("voiceless");
-    const voiced = document.getElementById("voiced");
     const textbox = document.getElementById("textbox");
     currentLine = document.getElementById("line");
     selectedGlyph = document.getElementById("pineapple");
+    const mango = document.getElementById("mango");
+
     glyphCategories = {
         voiceless: {
-            page: voiceless,
             label: "Voiceless",
+            id: "voiceless",
+            page: mango,
             glyphTypes: {
                 fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
-                longVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
+                ke: {label: "Ke", id: "ke", image: "images/42) ke.png",},
             },
         },
         voiced: {
-            page: voiced,
             label: "Voiced",
+            id: "voiced",
+            page: mango,
             glyphTypes: {
                 vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
+                ge: {label: "Ge", id: "ge", image: "images/47) ge.png",},
+            },
+        },
+        symbols: {
+            label: "Symbols",
+            id: "symbols",
+            page: mango,
+            glyphTypes: {
+                longVowel: {label: "Long Vowel", id: "long vowel", image: "images/0c) Long Vowel, Horizontal.png",},
             },
         },
     };
-
-    for (let element in glyphCategories) {
-        makeNewKey(tabs, glyphCategories[element].label, switchPage, glyphCategories[element].page)
-    }
     
+    for (let element in glyphCategories) {
+        makeNewPage(glyphCategories[element])
+        makeNewKey(tabs, glyphCategories[element].label, switchPage, glyphCategories[element].page)
+        fillPage(glyphCategories[element])
+    }
+
     makeNewKey(tabs, "New Line", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedGlyph);
-    fillPage(glyphCategories.voiceless)
-    fillPage(glyphCategories.voiced)
 
     switchPage(voiceless)
+}
+
+function makeNewPage(param) {
+    const newPage = document.createElement("div");
+    newPage.id = param.id;
+    newPage.className = "page";
+    pages.appendChild(newPage);
+    param.page = newPage;
 }
 
 function fillPage(category) {
@@ -58,14 +77,14 @@ function switchPage(page) {
 }
 
 function makeNewKey(location, label, func, parameter) {
-    const key = document.createElement("button");
-    key.className = "key";
-    key.onclick = function () {
+    const newKey = document.createElement("button");
+    newKey.className = "key";
+    newKey.onclick = function () {
         func(parameter)
     };
 
-    key.appendChild(document.createTextNode(label));
-    location.appendChild(key);
+    newKey.appendChild(document.createTextNode(label));
+    location.appendChild(newKey);
 }
 
 function select(glyph) {
