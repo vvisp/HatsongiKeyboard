@@ -1,29 +1,21 @@
 window.onload = function () {
     const keyboard = document.getElementById("keyboard");
     const textbox = document.getElementById("textbox");
-    line = document.getElementById("line");
+    currentLine = document.getElementById("line");
     selectedGlyph = document.getElementById("pineapple");
 
-    makeNewKey("Vu", "images/29) vu.png");
-    makeNewKey("Long Vowel", "images/0c) Long Vowel, Horizontal.png");
-    makeNewKey("Space", "");
-    
-    const keyDelete = document.getElementById("keyDelete");
-    keyDelete.onclick = function () {
-        selectedGlyph.remove();
-    };
-    
-    const keyNewLine = document.getElementById("keyNewLine");
-    keyNewLine.onclick = function () {
-        makeNewLine()
-    };
+    makeNewKey("Vu", makeNewGlyph, "images/29) vu.png");
+    makeNewKey("Long Vowel", makeNewGlyph, "images/0c) Long Vowel, Horizontal.png");
+    makeNewKey("Space", makeNewGlyph);
+    makeNewKey("New Line", makeNewLine);
+    makeNewKey("Delete", deleteSelectedGlyph);
 }
 
-function makeNewKey(keyLabel, imagePath) {
+function makeNewKey(keyLabel, func, imagePath) {
     const key = document.createElement("button");
     key.className = "key";
     key.onclick = function () {
-        makeNewGlyph(imagePath)
+        func(imagePath)
     };
 
     key.appendChild(document.createTextNode(keyLabel));
@@ -53,13 +45,17 @@ function makeNewGlyph(image) {
         newGlyph.className = "space";
     }
     
-    line.appendChild(newGlyph);
+    currentLine.appendChild(newGlyph);
 }
 
-function makeNewLine() {
+function makeNewLine(string) {
     const newLine = document.createElement("div");
     newLine.className = "line";
-    line = newLine
+    currentLine = newLine
     
     textbox.appendChild(newLine);
+}
+
+function deleteSelectedGlyph() {
+    selectedGlyph.remove();
 }
