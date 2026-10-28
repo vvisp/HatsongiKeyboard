@@ -1,22 +1,12 @@
 window.onload = function () {
-    const textbox = document.getElementById("textbox")
-    var line = document.getElementById("line")
+    const keyboard = document.getElementById("keyboard");
+    const textbox = document.getElementById("textbox");
+    line = document.getElementById("line");
     selectedGlyph = document.getElementById("pineapple");
 
-    const keyBlank = document.getElementById("keyBlank");
-    keyBlank.onclick = function () {
-        makeNewGlyph()
-    };
-    
-    const keyVu = document.getElementById("keyVu");
-    keyVu.onclick = function () {
-        makeNewGlyph("images/29) vu.png")
-    };
-    
-    const keyLongVowel = document.getElementById("keyLongVowel");
-    keyLongVowel.onclick = function () {
-        makeNewGlyph("images/0c) Long Vowel, Horizontal.png")
-    };
+    makeNewKey("Vu", "images/29) vu.png");
+    makeNewKey("Long Vowel", "images/0c) Long Vowel, Horizontal.png");
+    makeNewKey("Space", "");
     
     const keyDelete = document.getElementById("keyDelete");
     keyDelete.onclick = function () {
@@ -29,24 +19,38 @@ window.onload = function () {
     };
 }
 
+function makeNewKey(keyLabel, imagePath) {
+    const key = document.createElement("button");
+    key.className = "key";
+    key.onclick = function () {
+        makeNewGlyph(imagePath)
+    };
+
+    key.appendChild(document.createTextNode(keyLabel));
+    keyboard.appendChild(key);
+}
+
 function select(glyph) {
     selectedGlyph.style.background = "white";
     selectedGlyph = glyph
     selectedGlyph.style.background = "lightblue";
 }
 
-function makeNewGlyph(imageQuestion) {
+function makeNewGlyph(image) {
     const newGlyph = document.createElement("div");
     select(newGlyph)
-    newGlyph.className = "glyph";
     newGlyph.onclick = function () {
         select(newGlyph)
     };
 
-    if (imageQuestion) {
-    const glyphImage = document.createElement("img");
-    glyphImage.src = imageQuestion;
-    newGlyph.appendChild(glyphImage);
+    if (image) {
+        newGlyph.className = "glyph";
+        const glyphImage = document.createElement("img");
+        glyphImage.src = image;
+        newGlyph.appendChild(glyphImage);
+    }
+    else {
+        newGlyph.className = "space";
     }
     
     line.appendChild(newGlyph);
