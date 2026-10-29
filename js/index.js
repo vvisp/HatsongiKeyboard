@@ -3,7 +3,6 @@ window.onload = function () {
     const tabs = document.getElementById("tabs");
     const pages = document.getElementById("pages");
     const textbox = document.getElementById("textbox");
-    const mango = document.getElementById("mango");
     selectedCharacter = document.getElementById("pineapple");
     currentLine = document.getElementById("line");
     currentDirection = "horizontal";
@@ -12,25 +11,44 @@ window.onload = function () {
         voiceless: {
             label: "Voiceless",
             id: "voiceless",
-            page: mango,
             glyphs: {
-                fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
-                ke: {label: "Ke", id: "ke", image: "images/42) ke.png",},
+                fu: {label: "fu", id: "fu", image: "images/24) fu.png",},
+                ke: {label: "ke", id: "ke", image: "images/42) ke.png",},
             },
         },
         voiced: {
             label: "Voiced",
             id: "voiced",
-            page: mango,
             glyphs: {
-                vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
-                ge: {label: "Ge", id: "ge", image: "images/47) ge.png",},
+                vu: {label: "vu", id: "vu", image: "images/29) vu.png",},
+                ge: {label: "ge", id: "ge", image: "images/47) ge.png",},
+            },
+        },
+        palatalized: {
+            label: "Palatalized",
+            id: "palatalized",
+            glyphs: {
+                pyu: {label: "pyu", id: "pyu", image: "images/99) pyu.png",},
+                kye: {label: "kye", id: "kye", image: "images/111) kye.png",},
+            },
+        },
+        voicedPalatalized: {
+            label: "Voiced Palatalized",
+            id: "voiced palatalized",
+            glyphs: {
+                byu: {label: "byu", id: "byu", image: "images/103) byu.png",},
+            },
+        },
+        extras: {
+            label: "Extras",
+            id: "extras",
+            glyphs: {
+                a: {label: "a", id: "a", image: "images/5) a.png",},
             },
         },
         symbols: {
             label: "Symbols",
             id: "symbols",
-            page: mango,
             glyphs: {
                 longVowel: {
                     label: "Long Vowel",
@@ -48,7 +66,7 @@ window.onload = function () {
             tabs,
             glyphCategories[element].label,
             switchPage,
-            glyphCategories[element].page
+            document.getElementById(glyphCategories[element].id),
         )
         fillPage(glyphCategories[element])
     }
@@ -92,13 +110,12 @@ function makeNewPage(category) {
     newPage.id = category.id;
     newPage.className = "page";
     pages.appendChild(newPage);
-    category.page = newPage;
 }
 
 function fillPage(category) {
     for (let element in category.glyphs) {
         makeNewKey(
-            category.page,
+            document.getElementById(category.id),
             category.glyphs[element].label,
             drawCharacter,
             {
@@ -123,6 +140,13 @@ function makeNewKey(location, label, func, parameters) {
     newKey.className = "key";
     newKey.onclick = function () {
         func(parameters)
+
+        let array = Array.from(document.querySelectorAll(".open"))
+        for (let index = 0; index < array.length; index++) {
+            const element = array[index];
+            element.classList.remove("open")
+        }
+        newKey.classList.add("open")
     };
 
     newKey.appendChild(document.createTextNode(label));
@@ -187,4 +211,8 @@ function deleteSelectedCharacter() {
     }
     
     character.remove();
+}
+
+function getPage(category) {
+    return document.getElementById(category.id)
 }

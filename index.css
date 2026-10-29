@@ -6,14 +6,6 @@
   background: lightgray;
 }
 
-.page {
-  display: none;
-}
-
-.key {
-  margin: 10px;
-}
-
 .textbox {
   display: flex;
   border: thin solid black;
@@ -32,6 +24,10 @@
   padding: 10px;
 }
 
-.space {
-  padding: 20px;
+.key {
+  margin: 8px;
+}
+
+.open {
+  border: solid;
 }
