@@ -39,7 +39,6 @@ window.onload = function () {
                     image: "images/0c) Long Vowel, Horizontal.png",
                     vertical: "images/0d) Long Vowel, Vertical.png",
                 },
-                // longVowelV: {label: "Long Vowel V", id: "long vowel v", image: "images/0d) Long Vowel, Vertical.png",},
             },
         },
     };
@@ -59,31 +58,29 @@ window.onload = function () {
 
 function changeDirection() {
     if (currentDirection == "horizontal") {
-        style.textContent += ".textbox{flex-direction: row;}";
-        style.textContent += ".line{flex-direction: column;}";
-
-        // selectedGlyph.children[0].src = selectedGlyph.getAttribute("verticalForm")
-
         currentDirection = "vertical";
+        style.textContent = ".textbox{flex-direction: row;} .line{flex-direction: column;}";
+
+        let allGlyphs = document.querySelectorAll(".glyph")
+        for (let index = 0; index < allGlyphs.length; index++) {
+            const element = allGlyphs[index];
+            if (element.hasAttribute("verticalForm")) {
+                element.children[0].src = element.getAttribute("verticalForm")
+            }
+        }
     }
     else if (currentDirection == "vertical") {
-        style.textContent += ".textbox{flex-direction: column;}";
-        style.textContent += ".line{flex-direction: row;}";
-
-        // selectedGlyph.children[0].src = selectedGlyph.getAttribute("horizontalForm")
-
         currentDirection = "horizontal";
+        style.textContent = ".textbox{flex-direction: column;} .line{flex-direction: row;}";
+
+        let allGlyphs = document.querySelectorAll(".glyph")
+        for (let index = 0; index < allGlyphs.length; index++) {
+            const element = allGlyphs[index];
+            if (element.getAttribute("glyphCategory") == glyphCategories.symbols.id) {
+                element.children[0].src = element.getAttribute("horizontalForm")
+            }
+        }
     }
-
-    // let allGlyphs = document.getElementsByClassName("glyph")
-    
-    // for (let element in allGlyphs) {
-    //     console.log(allGlyphs[element])
-    // }
-
-    // if (parameters[1] == glyphCategories.symbols) {
-
-    // }
 }
 
 function makeNewPage(category) {
@@ -100,7 +97,10 @@ function fillPage(category) {
             category.page,
             category.glyphTypes[element].label,
             makeNewGlyph,
-            [category.glyphTypes[element], category]
+            {
+                category: category,
+                glyphType: category.glyphTypes[element],
+            },
         )
     }
 }
@@ -133,24 +133,25 @@ function select(glyph) {
 
 function makeNewGlyph(parameters) {
     const newGlyph = document.createElement("div");
-    newGlyph.id = parameters[0].id
+    newGlyph.id = parameters.glyphType.id
+    newGlyph.setAttribute("glyphCategory", parameters.category.id);
     select(newGlyph)
     newGlyph.onclick = function () {
         select(newGlyph)
     };
 
-    if (parameters[0]) {
+    if (parameters.glyphType) {
         newGlyph.className = "glyph";
         const glyphImage = document.createElement("img");
-        glyphImage.src = parameters[0].image;
+        glyphImage.src = parameters.glyphType.image;
         newGlyph.appendChild(glyphImage);
     } else {
         newGlyph.className = "space";
     }
 
-    if (parameters[1] == glyphCategories.symbols) {
-        newGlyph.setAttribute("horizontalForm", parameters[0].image);
-        newGlyph.setAttribute("verticalForm", parameters[0].vertical);
+    if (parameters.category == glyphCategories.symbols) {
+        newGlyph.setAttribute("horizontalForm", parameters.glyphType.image);
+        newGlyph.setAttribute("verticalForm", parameters.glyphType.vertical);
     }
     
     currentLine.appendChild(newGlyph);
