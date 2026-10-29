@@ -4,8 +4,7 @@ window.onload = function () {
     const pages = document.getElementById("pages");
     const textbox = document.getElementById("textbox");
     const mango = document.getElementById("mango");
-    const style = document.getElementById("style");
-    selectedGlyph = document.getElementById("pineapple");
+    selectedCharacter = document.getElementById("pineapple");
     currentLine = document.getElementById("line");
     currentDirection = "horizontal";
 
@@ -14,7 +13,7 @@ window.onload = function () {
             label: "Voiceless",
             id: "voiceless",
             page: mango,
-            glyphTypes: {
+            glyphs: {
                 fu: {label: "Fu", id: "fu", image: "images/24) fu.png",},
                 ke: {label: "Ke", id: "ke", image: "images/42) ke.png",},
             },
@@ -23,7 +22,7 @@ window.onload = function () {
             label: "Voiced",
             id: "voiced",
             page: mango,
-            glyphTypes: {
+            glyphs: {
                 vu: {label: "Vu", id: "vu", image: "images/29) vu.png",},
                 ge: {label: "Ge", id: "ge", image: "images/47) ge.png",},
             },
@@ -32,10 +31,10 @@ window.onload = function () {
             label: "Symbols",
             id: "symbols",
             page: mango,
-            glyphTypes: {
-                longVowelH: {
-                    label: "Long Vowel H",
-                    id: "long vowel h",
+            glyphs: {
+                longVowel: {
+                    label: "Long Vowel",
+                    id: "long vowel",
                     image: "images/0c) Long Vowel, Horizontal.png",
                     vertical: "images/0d) Long Vowel, Vertical.png",
                 },
@@ -45,25 +44,31 @@ window.onload = function () {
     
     for (let element in glyphCategories) {
         makeNewPage(glyphCategories[element])
-        makeNewKey(tabs, glyphCategories[element].label, switchPage, glyphCategories[element].page)
+        makeNewKey(
+            tabs,
+            glyphCategories[element].label,
+            switchPage,
+            glyphCategories[element].page
+        )
         fillPage(glyphCategories[element])
     }
 
     makeNewKey(tabs, "New Line", makeNewLine);
-    makeNewKey(tabs, "Delete", deleteSelectedGlyph);
+    makeNewKey(tabs, "Delete", deleteSelectedCharacter);
     makeNewKey(tabs, "Direction", changeDirection);
 
     switchPage(voiceless)
 }
 
 function changeDirection() {
+    let allCharacters = document.querySelectorAll(".character")
+
     if (currentDirection == "horizontal") {
         currentDirection = "vertical";
         style.textContent = ".textbox{flex-direction: row;} .line{flex-direction: column;}";
 
-        let allGlyphs = document.querySelectorAll(".glyph")
-        for (let index = 0; index < allGlyphs.length; index++) {
-            const element = allGlyphs[index];
+        for (let index = 0; index < allCharacters.length; index++) {
+            const element = allCharacters[index];
             if (element.hasAttribute("verticalForm")) {
                 element.children[0].src = element.getAttribute("verticalForm")
             }
@@ -73,9 +78,8 @@ function changeDirection() {
         currentDirection = "horizontal";
         style.textContent = ".textbox{flex-direction: column;} .line{flex-direction: row;}";
 
-        let allGlyphs = document.querySelectorAll(".glyph")
-        for (let index = 0; index < allGlyphs.length; index++) {
-            const element = allGlyphs[index];
+        for (let index = 0; index < allCharacters.length; index++) {
+            const element = allCharacters[index];
             if (element.getAttribute("glyphCategory") == glyphCategories.symbols.id) {
                 element.children[0].src = element.getAttribute("horizontalForm")
             }
@@ -92,14 +96,14 @@ function makeNewPage(category) {
 }
 
 function fillPage(category) {
-    for (let element in category.glyphTypes) {
+    for (let element in category.glyphs) {
         makeNewKey(
             category.page,
-            category.glyphTypes[element].label,
-            makeNewGlyph,
+            category.glyphs[element].label,
+            drawCharacter,
             {
                 category: category,
-                glyphType: category.glyphTypes[element],
+                glyph: category.glyphs[element],
             },
         )
     }
@@ -125,46 +129,62 @@ function makeNewKey(location, label, func, parameters) {
     location.appendChild(newKey);
 }
 
-function select(glyph) {
-    selectedGlyph.style.background = "white";
-    selectedGlyph = glyph
-    selectedGlyph.style.background = "lightblue";
+function select(character) {
+    selectedCharacter.style.background = "white";
+    selectedCharacter = character
+    selectedCharacter.style.background = "lightblue";
+
+    currentLine = selectedCharacter.parentElement
 }
 
-function makeNewGlyph(parameters) {
-    const newGlyph = document.createElement("div");
-    newGlyph.id = parameters.glyphType.id
-    newGlyph.setAttribute("glyphCategory", parameters.category.id);
-    select(newGlyph)
-    newGlyph.onclick = function () {
-        select(newGlyph)
+function drawCharacter(parameters) {
+    const newCharacter = document.createElement("div");
+    newCharacter.id = parameters.glyph.id
+    newCharacter.setAttribute("glyphCategory", parameters.category.id);
+    newCharacter.onclick = function () {
+        select(newCharacter)
     };
 
-    if (parameters.glyphType) {
-        newGlyph.className = "glyph";
-        const glyphImage = document.createElement("img");
-        glyphImage.src = parameters.glyphType.image;
-        newGlyph.appendChild(glyphImage);
-    } else {
-        newGlyph.className = "space";
-    }
+    let startingImage = parameters.glyph.image
 
     if (parameters.category == glyphCategories.symbols) {
-        newGlyph.setAttribute("horizontalForm", parameters.glyphType.image);
-        newGlyph.setAttribute("verticalForm", parameters.glyphType.vertical);
+        newCharacter.setAttribute("horizontalForm", parameters.glyph.image);
+        newCharacter.setAttribute("verticalForm", parameters.glyph.vertical);
+
+        if (currentDirection == "vertical") {
+            startingImage = parameters.glyph.vertical
+        }
+    }
+
+    if (parameters.glyph) {
+        newCharacter.className = "character";
+        const characterImage = document.createElement("img");
+        characterImage.src = startingImage;
+        newCharacter.appendChild(characterImage);
+    } else {
+        newCharacter.className = "space";
     }
     
-    currentLine.appendChild(newGlyph);
+    currentLine.appendChild(newCharacter);
+    select(newCharacter)
 }
 
 function makeNewLine(string) {
     const newLine = document.createElement("div");
     newLine.className = "line";
-    currentLine = newLine
-    
+
     textbox.appendChild(newLine);
+    currentLine = newLine
 }
 
-function deleteSelectedGlyph() {
-    selectedGlyph.remove();
+function deleteSelectedCharacter() {
+    let character = selectedCharacter
+
+    let array = Array.from(document.querySelectorAll(".character"))
+    let previousCharacter = array[array.indexOf(character) - 1]
+    if (previousCharacter) {
+        select(previousCharacter)
+    }
+    
+    character.remove();
 }

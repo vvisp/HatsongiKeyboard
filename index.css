@@ -25,7 +25,7 @@
   flex-direction: row;
 }
 
-.glyph {
+.character {
   display: flex;
   justify-content: center;
   align-items: center;
