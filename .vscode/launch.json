@@ -4,12 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    
 
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open test.html",
-            "file": "c:\\Users\\dylan\\Documents\\web-test\\test.html"
+            "name": "Open main.html",
+            "file": "c:\\Users\\dylan\\Documents\\web-test\\main.html"
         }
     ]
 }   

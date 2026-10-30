@@ -21,8 +21,12 @@ window.onload = function () {
     makeNewKey(tabs, "New Line", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedCharacter);
     makeNewKey(tabs, "Direction", changeDirection);
+    makeNewKey(tabs, "Base", changeToBase);
+    makeNewKey(tabs, "Voiced", changeToVoiced);
+    makeNewKey(tabs, "Palatal", changeToPalatal);
+    makeNewKey(tabs, "Voiced Palatal", changeToVoicedPalatal);
 
-    switchPage(voiceless)
+    switchPage(extras)
 }
 
 function changeDirection() {
@@ -45,7 +49,7 @@ function changeDirection() {
 
         for (let index = 0; index < allCharacters.length; index++) {
             const element = allCharacters[index];
-            if (element.getAttribute("glyphCategory") == glyphCategories.symbols.id) {
+            if (element.hasAttribute("horizontalForm")) {
                 element.children[0].src = element.getAttribute("horizontalForm")
             }
         }
@@ -118,13 +122,27 @@ function drawCharacter(parameters) {
 
     let startingImage = parameters.glyph.image
 
-    if (parameters.category == glyphCategories.symbols) {
+    if (parameters.glyph.vertical) {
         newCharacter.setAttribute("horizontalForm", parameters.glyph.image);
         newCharacter.setAttribute("verticalForm", parameters.glyph.vertical);
 
         if (currentDirection == "vertical") {
             startingImage = parameters.glyph.vertical
         }
+    } else {
+        newCharacter.setAttribute("baseForm", parameters.glyph.image);
+    }
+
+    if (parameters.glyph.voiced) {
+        newCharacter.setAttribute("voicedForm", parameters.glyph.voiced);
+    }
+
+    if (parameters.glyph.palatal) {
+        newCharacter.setAttribute("palatalForm", parameters.glyph.palatal);
+    }
+
+    if (parameters.glyph.voicedPalatal) {
+        newCharacter.setAttribute("voicedPalatalForm", parameters.glyph.voicedPalatal);
     }
 
     if (parameters.glyph) {
@@ -132,12 +150,34 @@ function drawCharacter(parameters) {
         const characterImage = document.createElement("img");
         characterImage.src = startingImage;
         newCharacter.appendChild(characterImage);
-    } else {
-        newCharacter.className = "space";
     }
     
     currentLine.appendChild(newCharacter);
     select(newCharacter)
+}
+
+function changeToBase() {
+    if (selectedCharacter.hasAttribute("baseForm")) {
+        selectedCharacter.children[0].src = selectedCharacter.getAttribute("baseForm")
+    }
+}
+
+function changeToVoiced() {
+    if (selectedCharacter.hasAttribute("voicedForm")) {
+        selectedCharacter.children[0].src = selectedCharacter.getAttribute("voicedForm")
+    }
+}
+
+function changeToPalatal() {
+    if (selectedCharacter.hasAttribute("palatalForm")) {
+        selectedCharacter.children[0].src = selectedCharacter.getAttribute("palatalForm")
+    }
+}
+
+function changeToVoicedPalatal() {
+    if (selectedCharacter.hasAttribute("voicedPalatalForm")) {
+        selectedCharacter.children[0].src = selectedCharacter.getAttribute("voicedPalatalForm")
+    }
 }
 
 function makeNewLine(string) {
