@@ -26,7 +26,7 @@ window.onload = function () {
     makeNewKey(tabs, "Palatal", changeToPalatal);
     makeNewKey(tabs, "Voiced Palatal", changeToVoicedPalatal);
 
-    switchPage(extras)
+    switchPage(iSyllables)
 }
 
 function changeDirection() {
