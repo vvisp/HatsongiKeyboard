@@ -9,24 +9,16 @@ window.onload = function () {
 
     for (let element in glyphCategories) {
         makeNewPage(glyphCategories[element])
-        makeNewKey(
-            tabs,
-            glyphCategories[element].label,
-            switchPage,
-            document.getElementById(glyphCategories[element].id),
-        )
         fillPage(glyphCategories[element])
     }
 
-    makeNewKey(tabs, "New Line", makeNewLine);
+    makeNewKey(tabs, "Enter", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedCharacter);
-    makeNewKey(tabs, "Direction", changeDirection);
+    makeNewKey(tabs, "Direct.", changeDirection);
     makeNewKey(tabs, "Base", changeToBase);
-    makeNewKey(tabs, "Voiced", changeToVoiced);
-    makeNewKey(tabs, "Palatal", changeToPalatal);
-    makeNewKey(tabs, "Voiced Palatal", changeToVoicedPalatal);
-
-    switchPage(iSyllables)
+    makeNewKey(tabs, "Voice.", changeToVoiced);
+    makeNewKey(tabs, "Palat.", changeToPalatal);
+    makeNewKey(tabs, "V.P.", changeToVoicedPalatal);
 }
 
 function changeDirection() {
@@ -68,26 +60,15 @@ function makeNewPage(category) {
 }
 
 function fillPage(category) {
-    for (let element in category.glyphs) {
+    for (let index = 0; index < category.glyphs.length; index++) {
+        const glyph = category.glyphs[index];
         makeNewKey(
             document.getElementById(category.id),
-            category.glyphs[element].label,
+            glyph.label,
             drawCharacter,
-            {
-                category: category,
-                glyph: category.glyphs[element],
-            },
+            {category: category, glyph: glyph,},
         )
     }
-}
-
-function switchPage(page) {
-    var children = pages.children;
-    for (var i = 0; i < children.length; i++) {
-        var child = children[i];
-        child.style.display = "none"
-    };
-    page.style.display = "block";
 }
 
 function makeNewKey(location, label, func, parameters) {
@@ -118,7 +99,6 @@ function select(character) {
 
 function drawCharacter(parameters) {
     const newCharacter = document.createElement("div");
-    newCharacter.id = parameters.glyph.id
     newCharacter.setAttribute("glyphCategory", parameters.category.id);
     newCharacter.onclick = function () {
         select(newCharacter)
