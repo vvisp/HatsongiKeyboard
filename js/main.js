@@ -38,9 +38,11 @@ function changeDirection() {
 
         for (let index = 0; index < allCharacters.length; index++) {
             const element = allCharacters[index];
+            const image = element.children[0]
             if (element.hasAttribute("verticalForm")) {
-                element.children[0].src = element.getAttribute("verticalForm")
+                image.src = element.getAttribute("verticalForm")
             }
+            image.className = "vertical"
         }
     }
     else if (currentDirection == "vertical") {
@@ -49,9 +51,11 @@ function changeDirection() {
 
         for (let index = 0; index < allCharacters.length; index++) {
             const element = allCharacters[index];
+            const image = element.children[0]
             if (element.hasAttribute("horizontalForm")) {
-                element.children[0].src = element.getAttribute("horizontalForm")
+                image.src = element.getAttribute("horizontalForm")
             }
+            image.className = "horizontal"
         }
     }
 }
@@ -148,6 +152,12 @@ function drawCharacter(parameters) {
     if (parameters.glyph) {
         newCharacter.className = "character";
         const characterImage = document.createElement("img");
+        if (currentDirection == "horizontal") {
+            characterImage.className = "horizontal"
+        } else if (currentDirection == "vertical") {
+            characterImage.className = "vertical"
+        }
+        
         characterImage.src = startingImage;
         newCharacter.appendChild(characterImage);
     }
