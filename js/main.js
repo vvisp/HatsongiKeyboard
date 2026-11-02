@@ -3,15 +3,19 @@ window.onload = function () {
     const tabs = document.getElementById("tabs");
     const pages = document.getElementById("pages");
     const textbox = document.getElementById("textbox");
+    const fontSizeField = document.getElementById("fontSizeField");
     selectedCharacter = document.getElementById("pineapple");
     currentLine = document.getElementById("line");
     currentDirection = "horizontal";
+    fontSize = 10
+    fontSpacing = 20
 
     for (let element in glyphCategories) {
         makeNewPage(glyphCategories[element])
         fillPage(glyphCategories[element])
     }
-
+    
+    makeNewKey(tabs, "Size", changeFontSize);
     makeNewKey(tabs, "Enter", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedCharacter);
     makeNewKey(tabs, "Direct.", changeDirection);
@@ -19,6 +23,24 @@ window.onload = function () {
     makeNewKey(tabs, "Voice.", changeToVoiced);
     makeNewKey(tabs, "Palat.", changeToPalatal);
     makeNewKey(tabs, "V.P.", changeToVoicedPalatal);
+}
+
+function changeFontSize() {
+    let allCharacters = document.querySelectorAll(".character")
+    fontSize = fontSizeField.value
+
+    for (let index = 0; index < allCharacters.length; index++) {
+        const element = allCharacters[index];
+        const image = element.children[0]
+        kittymeow(element, image)
+    }
+    // newCharacter.style.display = "flex"
+}
+
+function kittymeow(element, image) {
+    image.style.width = 0.05*fontSize*image.naturalWidth + "px"
+    image.style.height = 0.05*fontSize*image.naturalHeight + "px"
+    element.style.padding = 0.05*0.5*fontSize*fontSpacing + "px"
 }
 
 function changeDirection() {
@@ -33,6 +55,7 @@ function changeDirection() {
             const image = element.children[0]
             if (element.hasAttribute("verticalForm")) {
                 image.src = element.getAttribute("verticalForm")
+                element.style.display = "none"
             }
             image.className = "vertical"
         }
@@ -46,6 +69,7 @@ function changeDirection() {
             const image = element.children[0]
             if (element.hasAttribute("horizontalForm")) {
                 image.src = element.getAttribute("horizontalForm")
+                element.style.display = "none"
             }
             image.className = "horizontal"
         }
@@ -142,9 +166,7 @@ function drawCharacter(parameters) {
         newCharacter.appendChild(characterImage);
 
         characterImage.onload = function () {
-            characterImage.style.width = 0.5*characterImage.naturalWidth + "px"
-            characterImage.style.height = 0.5*characterImage.naturalHeight + "px"
-            newCharacter.style.padding = 0.5*10 + "px"
+            kittymeow(newCharacter, characterImage)
             newCharacter.style.display = "flex"
         };
     }
