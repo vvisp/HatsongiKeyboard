@@ -140,6 +140,13 @@ function drawCharacter(parameters) {
         
         characterImage.src = startingImage;
         newCharacter.appendChild(characterImage);
+
+        characterImage.onload = function () {
+            characterImage.style.width = 0.5*characterImage.naturalWidth + "px"
+            characterImage.style.height = 0.5*characterImage.naturalHeight + "px"
+            newCharacter.style.padding = 0.5*10 + "px"
+            newCharacter.style.display = "flex"
+        };
     }
     
     currentLine.appendChild(newCharacter);
@@ -170,7 +177,7 @@ function changeToVoicedPalatal() {
     }
 }
 
-function makeNewLine(string) {
+function makeNewLine() {
     const newLine = document.createElement("div");
     newLine.className = "line";
 
