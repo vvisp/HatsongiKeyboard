@@ -23,6 +23,12 @@
   align-items: center;
 }
 
+.fontSizeField {
+  background: white;
+  width: 50px;
+  padding: 10px;
+}
+
 /* .horizontal {
   height: 100%;
 } */

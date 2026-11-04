@@ -1,4 +1,11 @@
-glyphCategories = {
+const font = {
+    spacing: 10,
+
+    sizes: [0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1],
+    defaultSize: 0.4
+}
+
+const glyphCategories = {
     iSyllables: {
         label: "-i",
         id: "iSyllables",

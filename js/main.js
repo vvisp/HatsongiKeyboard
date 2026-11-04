@@ -3,19 +3,28 @@ window.onload = function () {
     const tabs = document.getElementById("tabs");
     const pages = document.getElementById("pages");
     const textbox = document.getElementById("textbox");
-    const fontSizeField = document.getElementById("fontSizeField");
+    // const fontSizeField = document.getElementById("fontSizeField");
     selectedCharacter = document.getElementById("pineapple");
     currentLine = document.getElementById("line");
     currentDirection = "horizontal";
-    fontSize = 10
-    fontSpacing = 20
+    sizeIndex = font.sizes.indexOf(font.defaultSize)
 
     for (let element in glyphCategories) {
         makeNewPage(glyphCategories[element])
         fillPage(glyphCategories[element])
     }
     
-    makeNewKey(tabs, "Size", changeFontSize);
+    // makeNewKey(tabs, "Size", changeFontSize);
+
+    const fontSizeField = document.createElement("div")
+    fontSizeField.className = "fontSizeField"
+    fontSizeValue = document.createTextNode(font.sizes[sizeIndex])
+
+    fontSizeField.appendChild(fontSizeValue)
+    keyboard.prepend(fontSizeField);
+
+    makeNewKey(tabs, "small", changeFontSize, -1);
+    makeNewKey(tabs, "big", changeFontSize, 1);
     makeNewKey(tabs, "Enter", makeNewLine);
     makeNewKey(tabs, "Delete", deleteSelectedCharacter);
     makeNewKey(tabs, "Direct.", changeDirection);
@@ -25,22 +34,37 @@ window.onload = function () {
     makeNewKey(tabs, "V.P.", changeToVoicedPalatal);
 }
 
-function changeFontSize() {
-    let allCharacters = document.querySelectorAll(".character")
-    fontSize = fontSizeField.value
-
-    for (let index = 0; index < allCharacters.length; index++) {
-        const element = allCharacters[index];
-        const image = element.children[0]
-        kittymeow(element, image)
+function changeFontSize(direction) {
+    let newIndex = sizeIndex + direction
+    if (font.sizes[newIndex]) {
+        sizeIndex = newIndex
+        let allCharacters = document.querySelectorAll(".character")
+        for (let index = 0; index < allCharacters.length; index++) {
+            const element = allCharacters[index];
+            const image = element.children[0]
+            loadImage(element, image)
+        }
+        fontSizeValue.nodeValue = font.sizes[sizeIndex] // KEEP THIS
     }
-    // newCharacter.style.display = "flex"
 }
 
-function kittymeow(element, image) {
-    image.style.width = 0.05*fontSize*image.naturalWidth + "px"
-    image.style.height = 0.05*fontSize*image.naturalHeight + "px"
-    element.style.padding = 0.05*0.5*fontSize*fontSpacing + "px"
+// function changeFontSize() {
+//     let allCharacters = document.querySelectorAll(".character")
+//     fontSize = fontSizeField.value
+
+//     for (let index = 0; index < allCharacters.length; index++) {
+//         const element = allCharacters[index];
+//         const image = element.children[0]
+//         loadImage(element, image)
+//     }
+//     // newCharacter.style.display = "flex"
+// }
+
+function loadImage(element, image) {
+    // console.log(sizeIndex)
+    image.style.width = font.sizes[sizeIndex]*image.naturalWidth + "px"
+    image.style.height = font.sizes[sizeIndex]*image.naturalHeight + "px"
+    element.style.padding = font.sizes[sizeIndex]*font.spacing + "px"
 }
 
 function changeDirection() {
@@ -109,6 +133,10 @@ function makeNewKey(location, label, func, parameters) {
         newKey.classList.add("open")
     };
 
+    // if (condition) {
+        
+    // }
+
     newKey.appendChild(document.createTextNode(label));
     location.appendChild(newKey);
 }
@@ -166,7 +194,7 @@ function drawCharacter(parameters) {
         newCharacter.appendChild(characterImage);
 
         characterImage.onload = function () {
-            kittymeow(newCharacter, characterImage)
+            loadImage(newCharacter, characterImage)
             newCharacter.style.display = "flex"
         };
     }
